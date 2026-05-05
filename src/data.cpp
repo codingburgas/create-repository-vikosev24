@@ -40,3 +40,26 @@ std::vector<Contact> loadContactsFromJsonFile(const std::string& filePath) {
     }
     return loadedContacts;
 }
+
+// dump the whole list back to disk, pretty-printed
+bool saveContactsToJsonFile(const std::string& filePath,
+                            const std::vector<Contact>& contactList) {
+    json outputDocument = json::array();
+    for (const auto& contactRecord : contactList) {
+        outputDocument.push_back({
+            {"contactId",    contactRecord.contactId},
+            {"firstName",    contactRecord.firstName},
+            {"lastName",     contactRecord.lastName},
+            {"phoneNumber",  contactRecord.phoneNumber},
+            {"emailAddress", contactRecord.emailAddress}
+        });
+    }
+
+    std::ofstream outputFileStream(filePath);
+    if (!outputFileStream.is_open()) {
+        std::cerr << "could not open " << filePath << " for writing\n";
+        return false;
+    }
+    outputFileStream << outputDocument.dump(4);
+    return outputFileStream.good();
+}
