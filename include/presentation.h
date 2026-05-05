@@ -30,3 +30,8 @@ struct GuiApplicationState {
     std::string statusMessage;
     bool statusMessageIsError = false;
 };
+
+void initializeApplicationState(GuiApplicationState& applicationState,
+                                const std::string& dataFilePath);
+
+void renderMainApplicationWindow(GuiApplicationState& applicationState);
