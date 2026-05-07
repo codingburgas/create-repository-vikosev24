@@ -50,4 +50,16 @@ void postStatusMessage(GuiApplicationState& applicationState,
     applicationState.statusMessage = messageText;
     applicationState.statusMessageIsError = isError;
 }
+
+// draw the colored status line if anything is queued
+void renderStatusBar(const GuiApplicationState& applicationState) {
+    if (applicationState.statusMessage.empty()) {
+        return;
+    }
+    const ImVec4 messageColor = applicationState.statusMessageIsError
+        ? ImVec4(0.95f, 0.35f, 0.35f, 1.00f)
+        : ImVec4(0.30f, 0.85f, 0.30f, 1.00f);
+    ImGui::TextColored(messageColor, "%s", applicationState.statusMessage.c_str());
+}
+
 }
