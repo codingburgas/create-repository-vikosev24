@@ -92,6 +92,34 @@ void renderAddEditForm(GuiApplicationState& applicationState,
     }
 }
 
-
+// draw the top toolbar: sort / save / reload / search
+void renderToolbar(GuiApplicationState& applicationState) {
+    if (ImGui::Button("Sort by Name")) {
+        sortContactList(applicationState.contactList, SortCriterion::ByName);
+        postStatusMessage(applicationState, "sorted by name", false);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Sort by Phone")) {
+        sortContactList(applicationState.contactList, SortCriterion::ByPhoneNumber);
+        postStatusMessage(applicationState, "sorted by phone", false);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Save to JSON")) {
+        const bool saveSucceeded =
+            persistAllContacts(applicationState.dataFilePath, applicationState.contactList);
+        postStatusMessage(applicationState,
+                          saveSucceeded ? "saved to " + applicationState.dataFilePath
+                                        : "failed to save",
+                          !saveSucceeded);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reload from JSON")) {
+        loadAllContacts(applicationState.dataFilePath, applicationState.contactList);
+        postStatusMessage(applicationState, "reloaded from disk", false);
+    }
+    ImGui::InputTextWithHint("##SearchQuery", "Search by first or last name",
+                             applicationState.searchQueryBuffer,
+                             GuiApplicationState::SEARCH_QUERY_BUFFER_SIZE);
+}
 
 }
