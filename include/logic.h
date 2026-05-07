@@ -36,3 +36,9 @@ std::vector<Contact> findContactsByNameLinear(
 
 int countContactsRecursive(const std::vector<Contact>& contactList,
                            std::size_t currentIndex = 0);
+int countContactsWithPhonePrefixRecursive(
+    const std::vector<Contact>& contactList,
+    const std::string& phonePrefix,
+    std::size_t currentIndex = 0);
+
+std::string validateContact(const Contact& contact);
