@@ -41,5 +41,13 @@ Contact buildContactFromInputBuffers(const GuiApplicationState& applicationState
     assembledContact.phoneNumber  = applicationState.phoneNumberInputBuffer;
     assembledContact.emailAddress = applicationState.emailAddressInputBuffer;
     return assembledContact;
-}}
+}
 
+// post a status message; isError flips the colour
+void postStatusMessage(GuiApplicationState& applicationState,
+                       const std::string& messageText,
+                       bool isError) {
+    applicationState.statusMessage = messageText;
+    applicationState.statusMessageIsError = isError;
+}
+}
