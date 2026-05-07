@@ -23,3 +23,11 @@ bool addNewContact(std::vector<Contact>& contactList,
 bool updateExistingContact(std::vector<Contact>& contactList,
                            const Contact& updatedContact,
                            std::string& errorMessage);
+                           
+bool removeContactById(std::vector<Contact>& contactList, int targetContactId);
+
+void sortContactList(std::vector<Contact>& contactList, SortCriterion criterion);
+
+std::vector<Contact> findContactsByNameLinear(
+    const std::vector<Contact>& contactList,
+    const std::string& nameQuery);
