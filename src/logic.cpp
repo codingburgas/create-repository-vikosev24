@@ -71,3 +71,16 @@ bool persistAllContacts(const std::string& filePath,
                         const std::vector<Contact>& contactList) {
     return saveContactsToJsonFile(filePath, contactList);
 }
+// validate, then push with a fresh id
+bool addNewContact(std::vector<Contact>& contactList,
+                   const Contact& newContact,
+                   std::string& errorMessage) {
+    errorMessage = validateContact(newContact);
+    if (!errorMessage.empty()) {
+        return false;
+    }
+    Contact contactWithAssignedId = newContact;
+    contactWithAssignedId.contactId = generateNextContactId(contactList);
+    contactList.push_back(contactWithAssignedId);
+    return true;
+}
