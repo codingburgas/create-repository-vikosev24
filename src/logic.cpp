@@ -58,3 +58,11 @@ void quickSortContactRange(std::vector<Contact>& contactList,
         quickSortContactRange(contactList, pivotIndex + 1, highIndex, isLess);
     }
 }
+} // namespace
+
+// thin wrapper so presentation never sees the data layer
+bool loadAllContacts(const std::string& filePath,
+                     std::vector<Contact>& targetContactList) {
+    targetContactList = loadContactsFromJsonFile(filePath);
+    return true;
+}
