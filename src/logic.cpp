@@ -63,6 +63,11 @@ void quickSortContactRange(std::vector<Contact>& contactList,
 // thin wrapper so presentation never sees the data layer
 bool loadAllContacts(const std::string& filePath,
                      std::vector<Contact>& targetContactList) {
-    targetContactList = loadContactsFromJsonFile(filePath);
+    target ContactList = loadContactsFromJsonFile(filePath);
     return true;
+}
+// thin wrapper, mirrors loadAllContacts
+bool persistAllContacts(const std::string& filePath,
+                        const std::vector<Contact>& contactList) {
+    return saveContactsToJsonFile(filePath, contactList);
 }
