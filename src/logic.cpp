@@ -182,3 +182,18 @@ int countContactsWithPhonePrefixRecursive(
     return (prefixMatches ? 1 : 0) +
            countContactsWithPhonePrefixRecursive(contactList, phonePrefix, currentIndex + 1);
 }
+// minimal sanity rules for a contact record
+std::string validateContact(const Contact& contact) {
+    if (contact.firstName.empty() && contact.lastName.empty()) {
+        return "contact must have a first or last name";
+    }
+    if (contact.phoneNumber.empty()) {
+        return "phone number is required";
+    }
+    const std::string allowedPhoneCharacters = "0123456789+-() ";
+    if (contact.phoneNumber.find_first_not_of(allowedPhoneCharacters) != std::string::npos) {
+        return "phone number contains invalid characters";
+    }
+    return "";
+}
+
