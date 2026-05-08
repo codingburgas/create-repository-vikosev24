@@ -161,3 +161,11 @@ int findContactIndexByIdBinary(const std::vector<Contact>& sortedByIdList,
     }
     return -1;
 }
+// recursive count, used to demo recursion in the GUI
+int countContactsRecursive(const std::vector<Contact>& contactList,
+                           std::size_t currentIndex) {
+    if (currentIndex >= contactList.size()) {
+        return 0;
+    }
+    return 1 + countContactsRecursive(contactList, currentIndex + 1);
+}
