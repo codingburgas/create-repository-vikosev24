@@ -63,3 +63,14 @@ bool saveContactsToJsonFile(const std::string& filePath,
     outputFileStream << outputDocument.dump(4);
     return outputFileStream.good();
 }
+
+// generate the next available contact ID
+int generateNextContactId(const std::vector<Contact>& contactList) {
+    int maxId = 0;
+    for (const auto& contact : contactList) {
+        if (contact.contactId > maxId) {
+            maxId = contact.contactId;
+        }
+    }
+    return maxId + 1;
+}

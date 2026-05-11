@@ -18,8 +18,6 @@ void copyStringIntoFixedBuffer(char* destinationBuffer,
         std::min(sourceString.size(), destinationBufferSize - 1);
     std::memcpy(destinationBuffer, sourceString.data(), copyableCharacterCount);
     destinationBuffer[copyableCharacterCount] = '\0';
-<<<<<<< HEAD
-=======
 }
 
 // reset the form back to "add" mode
@@ -205,5 +203,57 @@ void renderContactTable(GuiApplicationState& applicationState) {
     }
 }
 
->>>>>>> b1e6dc368f225caf3d6ee42ec4ea0814a150231b
+} // namespace
+
+void initializeApplicationState(GuiApplicationState& applicationState,
+                                const std::string& dataFilePath) {
+    applicationState.dataFilePath = dataFilePath;
+    loadAllContacts(dataFilePath, applicationState.contactList);
+}
+
+void renderMainApplicationWindow(GuiApplicationState& applicationState) {
+    ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize, ImGuiCond_FirstUseEver);
+
+    if (ImGui::Begin("Contact Management System", nullptr,
+                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize)) {
+        renderStatusBar(applicationState);
+        ImGui::Separator();
+        renderToolbar(applicationState);
+        ImGui::Separator();
+
+        if (ImGui::BeginTable("MainLayout", 2, ImGuiTableFlags_Resizable)) {
+            ImGui::TableSetupColumn("AddEdit", ImGuiTableColumnFlags_WidthStretch, 0.3f);
+            ImGui::TableSetupColumn("Contacts", ImGuiTableColumnFlags_WidthStretch, 0.7f);
+            ImGui::TableNextRow();
+
+            ImGui::TableSetColumnIndex(0);
+            bool shouldSaveContact = false;
+            Contact contactToSave;
+            renderAddEditForm(applicationState, shouldSaveContact, contactToSave);
+
+            if (shouldSaveContact) {
+                std::string errorMessage;
+                const bool isNewContact = (contactToSave.contactId == 0);
+                const bool saveSucceeded = isNewContact
+                    ? addNewContact(applicationState.contactList, contactToSave, errorMessage)
+                    : updateExistingContact(applicationState.contactList, contactToSave, errorMessage);
+
+                if (saveSucceeded) {
+                    clearAddEditFormBuffers(applicationState);
+                    postStatusMessage(applicationState,
+                                      isNewContact ? "contact added" : "contact updated", false);
+                } else {
+                    postStatusMessage(applicationState, errorMessage, true);
+                }
+            }
+
+            ImGui::TableSetColumnIndex(1);
+            renderContactTable(applicationState);
+
+            ImGui::EndTable();
+        }
+
+        ImGui::End();
+    }
 }
