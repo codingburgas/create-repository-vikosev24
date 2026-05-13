@@ -95,6 +95,7 @@ target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
 add_executable(contact_management_system
     src/main.cpp
     src/application.cpp
+    src/glfw.cpp
     src/presentation.cpp
     src/logic.cpp
     src/data.cpp)
