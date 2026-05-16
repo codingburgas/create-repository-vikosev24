@@ -258,4 +258,28 @@ namespace
     ImGui::Text("Contacts with phone starting with \"%s\": %d",
                 phonePrefixString.c_str(), matchingPrefixCount);
   }
+  // route a Save click to add or update depending on form mode
+  void handleAddOrUpdateSubmission(GuiApplicationState &applicationState,
+                                   const Contact &submittedContact)
+  {
+    std::string errorMessage;
+    const bool isEditingExistingContact =
+        (applicationState.editingContactId != GuiApplicationState::NO_CONTACT_BEING_EDITED);
+
+    const bool operationSucceeded = isEditingExistingContact
+                                        ? updateExistingContact(applicationState.contactList, submittedContact, errorMessage)
+                                        : addNewContact(applicationState.contactList, submittedContact, errorMessage);
+
+    if (operationSucceeded)
+    {
+      postStatusMessage(applicationState,
+                        isEditingExistingContact ? "contact updated" : "contact added",
+                        false);
+      clearAddEditFormBuffers(applicationState);
+    }
+    else
+    {
+      postStatusMessage(applicationState, errorMessage, true);
+    }
+  }
 }
